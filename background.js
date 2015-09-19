@@ -89,7 +89,6 @@ function onLog(log) {
 }
 
 function init() {
-  localStorage.clear();
   var skipsEnabled = localStorage.getItem(enableSkipsKey);
   if (skipsEnabled === null) {
     localStorage.setItem(enableSkipsKey, true);
