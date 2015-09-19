@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "Seen It",
+  "description": "Skip over Imgur images that you've already seen.",
+  "version": "1.0",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://imgur.com/*"],
+      "js": ["skipper.js"]
+    }
+  ],
+  "page_action": {
+    "default_icon": {
+      "19": "images/icon.png"
+    },
+    "default_title": "Seen It",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs"
+  ]
+}
