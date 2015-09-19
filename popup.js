@@ -20,8 +20,6 @@ function onClearSkips(e) {
 
 function onDomLoaded() {
   passLog(window);
-  // var enableSkipsButton = document.getElementById('enable-skips');
-  // passLog(enableSkipsButton);
   document.getElementById('enable-skips')
     .addEventListener('click', onEnable);
 
@@ -32,6 +30,10 @@ function onDomLoaded() {
     .addEventListener('click', onClearSkips);
 }
 
+/**
+ * Helper function to pass something to get console.log'ed in background.js
+ * @param  {Any} log What you want to log out
+ */
 function passLog(log) {
   chrome.extension.sendMessage({
     action: 'log',
