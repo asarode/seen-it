@@ -2,12 +2,28 @@
 <html>
   <head>
     <title>Seen It</title>
-    <script type="text/javascript" src="popup.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Quicksand:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="popup.css"/>
   </head>
   <body>
-    <h1>Seen It</h1>
-    <button id="enable-skips">Enable skipping</button>
-    <button id="disable-skips">Disable skipping</button>
-    <button id="clear-skips">Clear seen images</button>
+    <div class="header-wrap">
+      <img src="images/icon-64.png" class="logo-heading"/>
+      <h1>Seen It</h1>
+    </div>
+    <div class="content-wrap">
+      <div class="option-item">
+        <input id="skip-box" type="checkbox">
+        <label class="option-item-label">Enable skipping</label>
+        <p class="option-item-label--hint">Automatically skips images you've seen</p>
+      </div>
+      <div class="option-item">
+        <input id="store-box" type="checkbox"/>
+        <label class="option-item-label">Store images</label>
+        <p class="option-item-label--hint">Keeps track of the images you're seeing</p>
+      </div>
+      <button id="clear-skips-button" class="button-clear">
+      <img src="images/trash.png"/><span id="clear-button-content">Clear seen images</span></button>
+    </div>
   </body>
+  <script type="text/javascript" src="popup.js"></script>
 </html>

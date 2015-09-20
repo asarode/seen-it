@@ -4,7 +4,8 @@
  * Keys where we send our local storage values to
  */
 var seenItKey = 'seen-it-ndpkdkckdhfanagkhmjicjhdlmfaacmb';
-var enableSkipsKey = seenItKey + '-skips';
+var skipsKey = seenItKey + '-skips';
+var storeKey = seenItKey + '-storing';
 
 /**
  * Handler for messages passed to background.js
@@ -19,6 +20,12 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
       break;
     case 'disableSkips':
       onDisableSkips();
+      break;
+    case 'enableStoring':
+      onEnableStoring();
+      break;
+    case 'disableStoring':
+      onDisableStoring();
       break;
     case 'clearSkips':
       onClearSkips();
@@ -64,14 +71,16 @@ function processUrl(url) {
   var imageId = url.substring(idStart);
   var images = getImageObj();
 
-  // Save the image ID if it's not already in local storage
+  // Store the image if it hasn't been seen and storing is enabled
   if (!images[imageId]) {
-    console.log('storing image: ' + imageId);
-    images[imageId] = Date.now();
-    localStorage.setItem(seenItKey, JSON.stringify(images));
+    if (storingIsEnabled()) {
+      console.log('storing image: ' + imageId);
+      images[imageId] = Date.now();
+      localStorage.setItem(seenItKey, JSON.stringify(images));
+    }
   }
-  // Otherwise skip the image if skipping is enabled
-  else if (localStorage.getItem(enableSkipsKey)) {
+  // Otherwise skip the image if it has been seen and skipping is enabled
+  else if (skippingIsEnabled()) {
     console.log('skipping image: ' + imageId);
     skipImage();
   }
@@ -97,12 +106,23 @@ function getImageObj() {
   return imageString ? JSON.parse(imageString) : {};
 }
 
+function storingIsEnabled() {
+  return localStorage.getItem(storeKey) === 'true';
+}
+
+function skippingIsEnabled() {
+  return localStorage.getItem(skipsKey) === 'true';
+}
+
 /**
  * Enables skipping images
  */
 function onEnableSkips() {
   console.log('enable skips');
-  localStorage.setItem(enableSkipsKey, true);
+  localStorage.setItem(skipsKey, 'true');
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    processUrl(tabs[0].url);
+  });
 }
 
 /**
@@ -110,7 +130,23 @@ function onEnableSkips() {
  */
 function onDisableSkips() {
   console.log('disable skips');
-  localStorage.setItem(enableSkipsKey, false);
+  localStorage.setItem(skipsKey, 'false');
+}
+
+/**
+ * Enables storing images that are being seen
+ */
+function onEnableStoring() {
+  console.log('enable storing');
+  localStorage.setItem(storeKey, 'true');
+}
+
+/**
+ * Disables storing images that are being seen
+ */
+function onDisableStoring() {
+  console.log('disable storing');
+  localStorage.setItem(storeKey, 'false');
 }
 
 /**
@@ -131,9 +167,13 @@ function onLog(log) {
 }
 
 function init() {
-  var skipsEnabled = localStorage.getItem(enableSkipsKey);
+  var skipsEnabled = localStorage.getItem(skipsKey);
+  var storeEnabled = localStorage.getItem(storeKey);
   if (skipsEnabled === null) {
-    localStorage.setItem(enableSkipsKey, true);
+    localStorage.setItem(skipsKey, 'true');
+  }
+  if (storeEnabled === null) {
+    localStorage.setItem(storeKey, 'true');
   }
 }
 

@@ -15,12 +15,16 @@
   ],
   "page_action": {
     "default_icon": {
-      "19": "images/icon.png"
+      "16": "images/icon-16.png",
+      "19": "images/icon-19.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
     },
     "default_title": "Seen It",
     "default_popup": "popup.html"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ]
 }
