@@ -11,7 +11,7 @@ Seen It stores the images you see on Imgur and then automatically skips those im
 - [ ] Keyboard shortcut to toggle options
 - [ ] Keyboard shortcut that disabled skip on key down and then enables skipping again on key up
 - [ ] Switch from localstorage to chrome sync
-- [ ] Think about how to automatically clear old images if the history gets to large
+- [ ] Think about how to automatically clear old images if the history gets too large
 - [ ] Add tests
 
 ## Contact
