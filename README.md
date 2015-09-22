@@ -1,6 +1,6 @@
 # seen-it
 ![Hero](http://i.imgur.com/DHQW5JQ.png)
-A chrome extension for Imgur that skips images you've already seen. Perfect for hardcore Imgurians.
+A chrome extension for Imgur that skips images you've already seen. Perfect for hardcore Imgurians. You can [download it on the chrome store](https://chrome.google.com/webstore/detail/seen-it/nmajkegnjcjcjehiindhfldkfeoifeff).
 
 ## What does it do?
 ![Demo](https://j.gifs.com/yXorJo.gif)
