@@ -1,4 +1,5 @@
 # seen-it
+![Hero](http://i.imgur.com/DHQW5JQ.png)
 A chrome extension for Imgur that skips images you've already seen. Perfect for hardcore Imgurians.
 
 ## What does it do?
