@@ -16,6 +16,9 @@
     <script>
       var installers;
       document.addEventListener('DOMContentLoaded', function() {
+        if (document.referrer && document.refferer.indexOf('http://www.producthunt.com/') !== -1 {
+          document.getElementById('referral-text').textContent = "Perfect for wasting time when you're not busy on Product Hunt 😸";
+        }
         installers = document.querySelectorAll('.button-install');
         for (var i = 0; i < installers.length; i++) {
           if (chrome.webstore.isInstalled) {
@@ -45,6 +48,7 @@
           <h1>Seen It</h1>
       </div>
       <h2>Auto-skip Imgur posts you've already seen</h2>
+      <p id="referral-text"></p>
       <div class="install-bar">
         <a class="button button-icon button-install"><img src="images/chrome.png"/><span class="install-text">Add to Chrome</span></a>
         <a class="button button-naked" href="https://www.youtube.com/watch?v=T-YmkOKXFTM">Watch demo</a>

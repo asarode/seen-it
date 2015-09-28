@@ -142,6 +142,11 @@ body {
   padding: 20px;
 }
 
+#referral-text {
+  text
+  color: #a0a0a0;
+}
+
 @media (max-width: 560px) {
   .logo h1 {
     font-size: 42px;
