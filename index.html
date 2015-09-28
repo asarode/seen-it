@@ -20,7 +20,7 @@
       });
 
       var onInstall = function(e) {
-        chrome.webstore.install();
+        chrome.webstore.install('https://chrome.google.com/webstore/detail/nmajkegnjcjcjehiindhfldkfeoifeff');
         for (var i = 0; i < installers.length; i++) {
           installers[i].style.opacity = 0.5;
         }
