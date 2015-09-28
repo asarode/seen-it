@@ -13,17 +13,25 @@
     <script>
       var installers;
       document.addEventListener('DOMContentLoaded', function() {
-        installers = document.querySelectorAll('.button-install');
-        for (var i = 0; i < installers.length; i++) {
-          installers[i].addEventListener('click', onInstall);
+        installers = document.querySelectorAll('.button-install');        for (var i = 0; i < installers.length; i++) {
+          if (chrome.webstore.isInstalled) {
+            installers[i].classList.add('is-installed');
+          } else {
+            installers[i].addEventListener('click', onInstall);
+          }
         }
       });
 
-      var onInstall = function(e) {
-        chrome.webstore.install('https://chrome.google.com/webstore/detail/nmajkegnjcjcjehiindhfldkfeoifeff');
+      var onSuccess = function() {
         for (var i = 0; i < installers.length; i++) {
-          installers[i].style.opacity = 0.5;
+          installers[i].removeEventListener('click', onInstall);
+          installers[i].querySelector('.install-text').textContent = "It's installed!";
+          installers[i].classList.add('is-installed');
         }
+      }
+
+      var onInstall = function(e) {
+        chrome.webstore.install('https://chrome.google.com/webstore/detail/nmajkegnjcjcjehiindhfldkfeoifeff', onSuccess);
       }
     </script>
     <div class="block block-hero">
@@ -34,7 +42,7 @@
       </div>
       <h2>Auto-skip Imgur posts you've already seen</h2>
       <div class="install-bar">
-        <a class="button button-icon button-install"><img src="images/chrome.png"/>Add to Chrome</a>
+        <a class="button button-icon button-install"><img src="images/chrome.png"/><span class="install-text">Add to Chrome</span></a>
         <a class="button button-naked" href="https://www.youtube.com/watch?v=T-YmkOKXFTM">Watch demo</a>
       </div>
     </div>
@@ -55,7 +63,7 @@
         <p>All the code is open source. Your pull requests are very welcome!</p>
       </div>
       <div class="install-bar">
-        <a class="button button-icon button-install"><img src="images/chrome.png"/>Add to Chrome</a>
+        <a class="button button-icon button-install"><img src="images/chrome.png"/><span class="install-text">Add to Chrome</span></a>
         <a class="button button-naked" href="https://www.youtube.com/watch?v=T-YmkOKXFTM">Watch demo</a>
       </div>
     </div>
