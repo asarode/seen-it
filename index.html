@@ -11,15 +11,18 @@
   </head>
   <body>
     <script>
-
-
-      var install = function(e) {
-        if (chrome.app.isInstalled) {
-          e.target.style.opacity = 0.5;
+      var installers;
+      document.addEventListener('DOMContentLoaded', function() {
+        installers = document.querySelectorAll('.button-install');
+        for (var i = 0; i < installers.length; i++) {
+          installers[i].addEventListener('click', onInstall);
         }
-        else {
-          chrome.webstore.install();
-          e.target.style.opacity = 0.5;
+      });
+
+      var onInstall = function(e) {
+        chrome.webstore.install();
+        for (var i = 0; i < installers.length; i++) {
+          installers[i].style.opacity = 0.5;
         }
       }
     </script>
@@ -31,7 +34,7 @@
       </div>
       <h2>Auto-skip Imgur posts you've already seen</h2>
       <div class="install-bar">
-        <a class="button button-icon" onclick="install()"><img src="images/chrome.png"/>Add to Chrome</a>
+        <a class="button button-icon button-install"><img src="images/chrome.png"/>Add to Chrome</a>
         <a class="button button-naked" href="https://www.youtube.com/watch?v=T-YmkOKXFTM">Watch demo</a>
       </div>
     </div>
@@ -52,7 +55,7 @@
         <p>All the code is open source. Your pull requests are very welcome!</p>
       </div>
       <div class="install-bar">
-        <a class="button button-icon" onclick="chrome.webstore.install()"><img src="images/chrome.png"/>Install</a>
+        <a class="button button-icon button-install"><img src="images/chrome.png"/>Add to Chrome</a>
         <a class="button button-naked" href="https://www.youtube.com/watch?v=T-YmkOKXFTM">Watch demo</a>
       </div>
     </div>

@@ -132,3 +132,24 @@ background: linear-gradient(to bottom, rgba(255,251,232,1) 0%, rgba(247,241,215,
   text-align: center;
   padding: 20px;
 }
+
+@media (max-width: 560px) {
+  .logo h1 {
+    font-size: 42px;
+    line-height: 42px;
+  }
+
+  .logo img {
+    height: 42px;
+    margin-right: 10px;
+  }
+
+  .block-hero h2 {
+    color: #1BC028;
+    font-size: 20px;
+  }
+
+  .button.button-naked {
+    position: static;
+  }
+}
