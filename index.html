@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Seen It</title>
     <link rel="stylesheet" href="bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Quicksand:400,700' rel='stylesheet' type='text/css'>
@@ -10,11 +11,16 @@
   </head>
   <body>
     <script>
-      if (chrome.app.isInstaled) {
-        e.target.style.opacity = 0.5;
-      }
-      var successfulInstall = function(e) {
-        e.target.style.opacity = 0.5;
+
+
+      var install = function(e) {
+        if (chrome.app.isInstalled) {
+          e.target.style.opacity = 0.5;
+        }
+        else {
+          chrome.webstore.install();
+          e.target.style.opacity = 0.5;
+        }
       }
     </script>
     <div class="block block-hero">
@@ -25,7 +31,7 @@
       </div>
       <h2>Auto-skip Imgur posts you've already seen</h2>
       <div class="install-bar">
-        <a class="button button-icon" onclick="chrome.webstore.install('https://chrome.google.com/webstore/detail/nmajkegnjcjcjehiindhfldkfeoifeff', successfulInstall)"><img src="images/chrome.png"/>Install</a>
+        <a class="button button-icon" onclick="install()"><img src="images/chrome.png"/>Add to Chrome</a>
         <a class="button button-naked" href="https://www.youtube.com/watch?v=T-YmkOKXFTM">Watch demo</a>
       </div>
     </div>
