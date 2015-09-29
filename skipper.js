@@ -13,6 +13,9 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
         imageList[i].click();
         break;
       }
+      else if (i === imageList.length - 1) {
+        imageList[i].click();
+      }
     }
   }
 });
