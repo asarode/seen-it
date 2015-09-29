@@ -91,7 +91,10 @@ function processUrl(url) {
  */
 function skipImage() {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {action: 'skip'}, function(response) {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'skip',
+      history: getImageObj()
+    }, function(response) {
       // put response from message here if needed
     });
   });
