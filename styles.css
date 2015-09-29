@@ -8,6 +8,15 @@ body {
   border-bottom: 1px solid #f5f5f5;
 }
 
+.block-body {
+  padding-top: 100px;
+  background: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(244,255,237,1) 100%);
+}
+
+.hero-gif {
+  margin-top: 30px;
+}
+
 .block.block-hero {
   text-align: center;
   padding-top: 100px;
@@ -114,9 +123,9 @@ body {
 
 .button.button-naked {
   border: none;
-  text-decoration: underline;
   position: absolute;
-  opacity: 0.8;
+  opacity: 0.4;
+  text-decoration: underline;
 }
 
 .button-icon {
