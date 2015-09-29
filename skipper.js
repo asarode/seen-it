@@ -4,12 +4,17 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     // Imgur gallery
     // var nextButton = document.querySelector('.navNext');
     // nextButton.click();
+    var isList = document.querySelector('.items.list');
     var imageList = document.querySelectorAll('.items > a');
+
     for (var i = 0; i < imageList.length; i++) {
-      var linkId = imageList[i].getAttribute('href');
-      var startIndex = linkId.lastIndexOf('/') + 1;
-      var cleanLinkId = linkId.substring(startIndex);
-      if (!msg.history[cleanLinkId]) {
+      var linkId;
+      if (isList) {
+        linkId = getIdFromListItem(imageList[i].getAttribute('data-reactid'));
+      } else {
+        linkId = getIdFromGridItem(imageList[i].getAttribute('href'));
+      }
+      if (!msg.history[linkId]) {
         imageList[i].click();
         break;
       }
@@ -19,3 +24,13 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     }
   }
 });
+
+function getIdFromGridItem(attr) {
+  var startIndex = attr.lastIndexOf('/') + 1;
+  return attr.substring(startIndex);
+}
+
+function getIdFromListItem(attr) {
+  var startIndex = attr.lastIndexOf('$') + 1;
+  return attr.substring(startIndex);
+}
