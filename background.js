@@ -46,7 +46,7 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
  */
 function checkForImgurUrl(tabId, changeInfo, tab) {
   if (changeInfo.status === 'complete') {
-    if (tab.url.indexOf('http://imgur.com') === 0) {
+    if (tab.url.indexOf('//imgur.com') === 0) {
       chrome.pageAction.show(tabId);
       processUrl(tab.url);
     } else {
