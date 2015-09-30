@@ -1,6 +1,8 @@
 'use strict';
 
-function onSkipChanged(e) {
+import * as utils from '../utils';
+
+const onSkipChanged = (e) => {
   if (e.target.checked) {
     chrome.extension.sendMessage({
       action: 'enableSkips'
@@ -12,7 +14,7 @@ function onSkipChanged(e) {
   }
 }
 
-function onStoreChanged(e) {
+const onStoreChanged = (e) => {
   if (e.target.checked) {
     chrome.extension.sendMessage({
       action: 'enableStoring'
@@ -24,18 +26,26 @@ function onStoreChanged(e) {
   }
 }
 
-function onClearSkips(e) {
+const onClearSkips = (e) => {
   chrome.extension.sendMessage({
     action: 'clearSkips'
   });
   var clearButtonContent = document.getElementById('clear-button-content');
   clearButtonContent.innerHTML = 'Images cleared'
-  setTimeout(function() {
+  setTimeout(() => {
     clearButtonContent.innerHTML = 'Clear seen images'
   }, 1000)
 }
 
-function onDomLoaded() {
+/**
+ * Restore the user's options based on what's in local storage
+ */
+const restoreOptions = () => {
+  document.getElementById('skip-box').checked = utils.getSkipSetting();
+  document.getElementById('store-box').checked = utils.getStoreSetting();
+}
+
+const onDomLoaded = () => {
   restoreOptions();
   document.getElementById('skip-box')
     .addEventListener('change', onSkipChanged);
@@ -45,33 +55,6 @@ function onDomLoaded() {
 
   document.getElementById('clear-skips-button')
     .addEventListener('click', onClearSkips);
-}
-
-/**
- * Restore the user's options based on what's in local storage
- */
-function restoreOptions() {
-  var seenItKey = 'seen-it-ndpkdkckdhfanagkhmjicjhdlmfaacmb';
-  var skipsKey = seenItKey + '-skips';
-  var storeKey = seenItKey + '-storing';
-
-  if (localStorage.getItem(skipsKey) === 'true') {
-    document.getElementById('skip-box').checked = true;
-  }
-  if (localStorage.getItem(storeKey) === 'true') {
-    document.getElementById('store-box').checked = true;
-  }
-}
-
-/**
- * Helper function to pass something to get console.log'ed in background.js
- * @param  {Any} log What you want to log out
- */
-function passLog(log) {
-  chrome.extension.sendMessage({
-    action: 'log',
-    log: log
-  });
 }
 
 document.addEventListener('DOMContentLoaded', onDomLoaded);

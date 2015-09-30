@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
+var del = require('del');
 
 // Bundles the background scripts
 gulp.task('background', function() {
@@ -38,14 +39,16 @@ gulp.task('client', function() {
 
 // Rebuilds scripts and demo on change
 gulp.task('watch', function() {
-  gulp.watch('src/background/**/*.*', ['background', 'demo']);
-  gulp.watch('src/popup/**/*.*', ['popup', 'demo']);
-  gulp.watch('src/client/**/*.*', ['client', 'demo']);
+  gulp.watch('src/**/*.*', ['scripts', 'demo']);
+});
+
+gulp.task('cleanDemo', function() {
+  return del(['demo']);
 });
 
 // Moves files to a demo folder that you can load into chrome to test a local
 // copy of the extension
-gulp.task('demo', function() {
+gulp.task('demo', ['cleanDemo'], function() {
   gulp.src('dist/**/*.*')
     .pipe(gulp.dest('demo/dist/'));
 

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "gulp",
     "demo": "gulp demo",
+    "build": "gulp scripts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,6 +28,7 @@
   "devDependencies": {
     "babelify": "^6.3.0",
     "browserify": "^11.2.0",
+    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "vinyl-source-stream": "^1.1.0"
   }
