@@ -9,7 +9,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://imgur.com/*", "https://imgur.com/*"],
+      "matches": ["*://imgur.com/*"],
       "js": ["skipper.js"]
     }
   ],
