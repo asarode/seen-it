@@ -46,7 +46,7 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
  */
 function checkForImgurUrl(tabId, changeInfo, tab) {
   if (changeInfo.status === 'complete') {
-    if (tab.url.indexOf('//imgur.com') === 0) {
+    if (tab.url.indexOf('//imgur.com') !== 1) {
       chrome.pageAction.show(tabId);
       processUrl(tab.url);
     } else {
@@ -68,7 +68,11 @@ function processUrl(url) {
 
   // Get the image's ID from the URL
   var idStart = url.lastIndexOf('/') + 1;
-  var imageId = url.substring(idStart);
+  var idEnd = url.indexOf('?');
+  if (idEnd === -1) {
+    idEnd = url.length;
+  }
+  var imageId = url.substring(idStart, idEnd);
   var images = getImageObj();
 
   // Store the image if it hasn't been seen and storing is enabled
