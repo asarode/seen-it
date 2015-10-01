@@ -48,7 +48,7 @@ gulp.task('cleanDemo', function() {
 
 // Moves files to a demo folder that you can load into chrome to test a local
 // copy of the extension
-gulp.task('demo', ['cleanDemo'], function() {
+gulp.task('demo', ['cleanDemo', 'scripts'], function() {
   gulp.src('dist/**/*.*')
     .pipe(gulp.dest('demo/dist/'));
 

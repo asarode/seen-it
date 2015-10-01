@@ -1,21 +1,24 @@
-chrome.extension.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.action === 'skip') {
-    let imageList = document.querySelectorAll('.items > a');
-    for (var i = 0; i < imageList.length; i++) {
-      let linkId = parseIdFromNode(imageList[i]);
-      if (!msg.history[linkId]) {
-        imageList[i].click();
-        break;
-      }
-      else if (i === imageList.length - 1) {
-        imageList[i].click();
-      }
-    }
-  }
-});
+'use strict';
 
-const parseIdFromNode = (node) => {
-  let attr = node.getAttribute('data-reactid');
-  var startIndex = attr.lastIndexOf('$') + 1;
-  return attr.substring(startIndex);
+import skipper from './skipper';
+import keyboard from './keyboard';
+
+const init = () => {
+  chrome.extension.onMessage.addListener(onMessage);
+  window.addEventListener('keydown', keyboard.onHotKey, false);
 }
+
+/**
+ * Executes the correct handler function based on which message was passed
+ * @param  {Object} msg          The message from the sender
+ * @param  {Object} sender       The sender of the message
+ * @param  {Object} sendResponse What to send back to the sender after handling
+ *                               the message
+ */
+const onMessage = (msg, sender, sendResponse) => {
+  if (msg.action === 'skip') {
+    skipper.goToUnseen(msg.payload.history);
+  }
+}
+
+init();

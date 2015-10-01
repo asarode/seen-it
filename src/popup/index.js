@@ -1,6 +1,6 @@
 'use strict';
 
-import * as utils from '../utils';
+import { storage } from '../utils';
 
 const onSkipChanged = (e) => {
   if (e.target.checked) {
@@ -41,8 +41,8 @@ const onClearSkips = (e) => {
  * Restore the user's options based on what's in local storage
  */
 const restoreOptions = () => {
-  document.getElementById('skip-box').checked = utils.getSkipSetting();
-  document.getElementById('store-box').checked = utils.getStoreSetting();
+  document.getElementById('skip-box').checked = storage.getSkipSetting();
+  document.getElementById('store-box').checked = storage.getStoreSetting();
 }
 
 const onDomLoaded = () => {

@@ -1,41 +1,45 @@
 'use strict';
 
-import * as utils from '../utils';
+import { storage } from '../utils';
 
 const init = () => {
   chrome.tabs.onUpdated.addListener(checkForImgurUrl);
+  chrome.extension.onMessage.addListener(onMessage);
 }
 
 /**
- * Handler for messages passed to background.js
- * @param  {Object} msg           The message payload object passed
- * @param  {[type]} sender        Who the message is coming from
- * @param  {[type]} sendResponse) Chrome's sendResponse param
+ * Executes the correct handler function based on which message was passed
+ * @param  {Object} msg          The message from the sender
+ * @param  {Object} sender       The sender of the message
+ * @param  {Object} sendResponse What to send back to the sender after handling
+ *                               the message
  */
-chrome.extension.onMessage.addListener((msg, sender, sendResponse) => {
+const onMessage = (msg, sender, sendResponse) => {
   switch (msg.action) {
     case 'enableSkips':
-      onEnableSkips();
+      enableSkips();
       break;
     case 'disableSkips':
-      onDisableSkips();
+      disableSkips();
       break;
+    case 'toggleSkips':
+      toggleSkips();
     case 'enableStoring':
-      onEnableStoring();
+      enableStoring();
       break;
     case 'disableStoring':
-      onDisableStoring();
+      disableStoring();
+      break;
+    case 'toggleStoring':
+      toggleStoring()
       break;
     case 'clearSkips':
-      onClearSkips();
-      break;
-    case 'log':
-      onLog(msg.log);
+      clearSkips();
       break;
     default:
       console.warn('Unrecognized message: ' + msg.action);
   }
-});
+}
 
 /**
  * Checks if the tab is on Imgur to decide whether to load the page action
@@ -66,11 +70,10 @@ const processUrl = (url) => {
   }
 
   let imageId = parseId(url);
-  let history = utils.getHistory();
+  let history = storage.getHistory();
   // Store the image if it hasn't been seen and storing is enabled
   if (!history[imageId]) {
-    history[imageId] = Date.now();
-    utils.setHistory(history);
+    storeImage(imageId);
   }
   // Otherwise skip the image if it has been seen and skipping is enabled
   else {
@@ -82,17 +85,26 @@ const processUrl = (url) => {
  * Passes a message to the content script to skip the image
  */
 const skipImage = () => {
-  if (!utils.getSkipSetting()) {
+  if (!storage.getSkipSetting()) {
     return;
   }
   chrome.tabs.query({active: true, currentWindow: true}, tabs => {
     chrome.tabs.sendMessage(tabs[0].id, {
       action: 'skip',
-      history: utils.getHistory()
+      payload: {
+        history: storage.getHistory()
+      }
     }, response => {
       // put response from message here if needed
     });
   });
+}
+
+const storeImage = (id) => {
+  if (!storage.getStoreSetting()) {
+    return;
+  }
+  storage.storeImageId(id);
 }
 
 const parseId = (url) => {
@@ -107,8 +119,8 @@ const parseId = (url) => {
 /**
  * Enables skipping images
  */
-const onEnableSkips = () => {
-  utils.setSkipSetting(true);
+const enableSkips = () => {
+  storage.setSkipSetting(true);
   // consider taking this out so enabling skipping doesn't immediately make the
   // user move ahead
   chrome.tabs.query({active: true, currentWindow: true}, tabs => {
@@ -119,29 +131,51 @@ const onEnableSkips = () => {
 /**
  * Disables skipping images
  */
-const onDisableSkips = () => {
-  utils.setSkipSetting(false);
+const disableSkips = () => {
+  storage.setSkipSetting(false);
+}
+
+/**
+ * Toggles the skipping option
+ */
+const toggleSkips = () => {
+  if (storage.getSkipSetting()) {
+    disableSkips();
+  } else {
+    enableSkips();
+  }
 }
 
 /**
  * Enables storing images that are being seen
  */
-const onEnableStoring = () => {
-  utils.setStoreSetting(true);
+const enableStoring = () => {
+  storage.setStoreSetting(true);
 }
 
 /**
  * Disables storing images that are being seen
  */
-const onDisableStoring = () => {
-  utils.setStoreSetting(false);
+const disableStoring = () => {
+  storage.setStoreSetting(false);
+}
+
+/**
+ * Toggles the storing option
+ */
+const toggleStoring = () => {
+  if (storage.getStoreSetting()) {
+    disableStoring();
+  } else {
+    enableStoring();
+  }
 }
 
 /**
  * Clears all images currently stored in local storage
  */
-const onClearSkips = () => {
-  utils.setHistory({});
+const clearSkips = () => {
+  storage.setHistory({});
 }
 
 init();
