@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["http://imgur.com/*"],
-      "js": ["skipper.js"]
+      "js": ["skipper.js", "keyboard.js"]
     }
   ],
   "page_action": {
