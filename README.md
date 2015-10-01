@@ -1,4 +1,6 @@
 # seen-it
+
+[![Join the chat at https://gitter.im/asarode/seen-it](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/asarode/seen-it?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![Hero](http://i.imgur.com/DHQW5JQ.png)
 A chrome extension for Imgur that skips images you've already seen. Perfect for hardcore Imgurians. You can [download it on the chrome store](https://chrome.google.com/webstore/detail/seen-it/nmajkegnjcjcjehiindhfldkfeoifeff).
 
