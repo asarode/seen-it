@@ -30,6 +30,12 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
     case 'clearSkips':
       onClearSkips();
       break;
+    case 'ToggleSkips':
+      onToggleSkips();
+      break;
+    case 'ToggleStoring':
+      onToggleStoring();
+      break;
     case 'log':
       onLog(msg.log);
       break;
@@ -163,6 +169,23 @@ function onClearSkips() {
   console.log('clear skips');
   localStorage.removeItem(seenItKey);
 }
+
+function onToggleSkips(){
+    if (skippingIsEnabled()) {
+      onDisableSkips();
+    } else {
+      onEnableSkips();
+    }
+}
+
+function onToggleStoring(){
+    if (storingIsEnabled()) {
+      onDisableStoring();
+    } else {
+      onEnableStoring();
+    }
+}
+
 
 /**
  * Helper function to log out statements. Other files can pass background.js a
