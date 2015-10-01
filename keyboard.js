@@ -1,14 +1,14 @@
 //var skipsToggled = false;
 
 //window.addEventListener("keydown", handleKeyDown, false);
-window.addEventListener("keyup", handleKeyUp, false);
+window.addEventListener('keydown', handleHotKey, false);
 
-function handleKeyUp(e){
-  if (e.keyCode == "90" && e.altKey) {//Pressed z key 
+function handleHotKey(e){
+  if (e.keyCode == "90" && e.altKey) { // Pressed z key
     chrome.extension.sendMessage({
       action: 'ToggleSkips'
     });
-  } else if (e.keyCode == "88" && e.altKey) {//Pressed x key
+  } else if (e.keyCode == "88" && e.altKey) { // Pressed x key
     chrome.extension.sendMessage({
       action: 'ToggleStoring'
     });
