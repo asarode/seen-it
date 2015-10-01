@@ -100,6 +100,10 @@ const skipImage = () => {
   });
 }
 
+/**
+ * Stores the image id if storing is enabled
+ * @param  {String} id The image id to store
+ */
 const storeImage = (id) => {
   if (!storage.getStoreSetting()) {
     return;
@@ -107,6 +111,11 @@ const storeImage = (id) => {
   storage.storeImageId(id);
 }
 
+/**
+ * Gets the image id from the url
+ * @param  {String} url The url to parse the id form
+ * @return {String}     The image id
+ */
 const parseId = (url) => {
   let idStart = url.lastIndexOf('/') + 1;
   let idEnd = url.indexOf('?');

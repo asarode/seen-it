@@ -2,6 +2,10 @@
 
 import { storage } from '../utils';
 
+/**
+ * Toggles the skip option in response to the skip checkbox being changed
+ * @param  {Object} e The skip checkbox change event
+ */
 const onSkipChanged = (e) => {
   if (e.target.checked) {
     chrome.extension.sendMessage({
@@ -14,6 +18,10 @@ const onSkipChanged = (e) => {
   }
 }
 
+/**
+ * Toggles the storage option in response to the storage checkbox being changed
+ * @param  {Object} e The storage checkbox change event
+ */
 const onStoreChanged = (e) => {
   if (e.target.checked) {
     chrome.extension.sendMessage({
@@ -26,6 +34,10 @@ const onStoreChanged = (e) => {
   }
 }
 
+/**
+ * Clears all the history in response to the clear button being clicked
+ * @param  {Object} e The clear button click event
+ */
 const onClearSkips = (e) => {
   chrome.extension.sendMessage({
     action: 'clearSkips'
@@ -45,6 +57,10 @@ const restoreOptions = () => {
   document.getElementById('store-box').checked = storage.getStoreSetting();
 }
 
+/**
+ * Handles setting up the DOM after it is loaded. Sets the option fields to the
+ * appropriate value based on the options in storage.
+ */
 const onDomLoaded = () => {
   restoreOptions();
   document.getElementById('skip-box')
