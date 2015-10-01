@@ -2,10 +2,13 @@
 
 import skipper from './skipper';
 import keyboard from './keyboard';
+import {listenButtonClick, listenKeyShortcuts}  from './nav';
 
 const init = () => {
   chrome.extension.onMessage.addListener(onMessage);
   window.addEventListener('keydown', keyboard.onHotKey, false);
+  listenButtonClick();
+  listenKeyShortcuts();
 }
 
 /**
