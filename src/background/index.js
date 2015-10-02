@@ -130,11 +130,6 @@ const parseId = (url) => {
  */
 const enableSkips = () => {
   storage.setSkipSetting(true);
-  // consider taking this out so enabling skipping doesn't immediately make the
-  // user move ahead
-  chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-    processUrl(tabs[0].url);
-  });
 }
 
 /**
