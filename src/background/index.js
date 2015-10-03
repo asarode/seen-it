@@ -49,7 +49,7 @@ const onMessage = (msg, sender, sendResponse) => {
  */
 const checkForImgurUrl = (tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete') {
-    if (tab.url.indexOf('//imgur.com') !== 1) {
+    if (tab.url.indexOf('//imgur.com') !== -1) {
       chrome.pageAction.show(tabId);
       processUrl(tab.url);
     } else {
