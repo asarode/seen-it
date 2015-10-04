@@ -6,7 +6,6 @@ const goToUnseen = (history) => {
   let imageList = document.querySelectorAll('.items > a');
   for (var i = 0; i < imageList.length; i++) {
     let linkId = parseIdFromNode(imageList[i]);
-    console.log('History in skipper: ', history);
     if (!history[linkId]) {
       imageList[i].click();
       break;

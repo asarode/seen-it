@@ -2,10 +2,14 @@
 
 import skipper from './skipper';
 import keyboard from './keyboard';
+import { storage } from '../utils';
+import {listenButtonClick, listenKeyShortcuts}  from './nav';
 
 const init = () => {
   chrome.extension.onMessage.addListener(onMessage);
   window.addEventListener('keydown', keyboard.onHotKey, false);
+  listenButtonClick();
+  listenKeyShortcuts();
 }
 
 /**
@@ -16,8 +20,11 @@ const init = () => {
  *                               the message
  */
 const onMessage = (msg, sender, sendResponse) => {
-  if (msg.action === 'skip') {
+  if (msg.action === 'skip' && !storage.getDoNotSkipNext()) {
     skipper.goToUnseen(msg.payload.history);
+  }
+  if (msg.action === 'resetDoNotSkipNextFlag') {
+    storage.setDoNotSkipNext(false);
   }
 }
 

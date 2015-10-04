@@ -9,8 +9,6 @@ import { keys } from '../constants';
  */
 const getHistory = () => {
   let stringified = localStorage.getItem(keys.HISTORY);
-  console.log(keys.HISTORY);
-  console.log(safeGetObj(stringified));
   return safeGetObj(stringified);
 }
 
@@ -70,27 +68,46 @@ const setStoreSetting = (value) => {
 }
 
 /**
- * Checks a strigified boolean and defaults to `true` if the string is `null`
- * @param  {String} stringValue The stringified bool
- * @return {Boolean}            `true` if the string is null or it represents
- *                              true, `false` otherwise
- * @private
+ * Gets the doNotSkip flag saved in storage
+ * @return  {Boolean} value `true` to disable the skip behavior on the next image.
  */
-const safeGetBool = (stringValue) => {
-  return stringValue !== null ? stringValue === 'true' : true;
+const getDoNotSkipNext = () => {
+  let skipString = localStorage.getItem(keys.SKIPNEXT);
+  return safeGetBool(skipString, false);
 }
 
 /**
- * Parses a stringified object and defaults to an empty object if the object is
+ * Sets the doNotSkip flag and saves it to storage
+ * @param  {Boolean} value `true` to disable the skip behavior on the next image.
+ */
+const setDoNotSkipNext = (value) => {
+  localStorage.setItem(keys.SKIPNEXT, String(value));
+}
+
+/**
+ * Checks a strigified boolean and defaults to `def` if the string is `null`
+ * @param  {String}  stringValue The stringified bool
+ * @param  {Boolean} def         The value to set if item is null
+ * @return {Boolean}             `true` if the string is null or it represents
+ *                               true, `false` otherwise
+ * @private
+ */
+const safeGetBool = (stringValue, def=true) => {
+  return stringValue !== null ? stringValue === 'true' : def;
+}
+
+/**
+ * Parses a stringified object and defaults to `def` if the object is
  * `null`
  * @param  {String} stringValue The stringified object
+ * @param  {Object} def         The value to set if item is null
  * @return {Object}             An empty object if `stringValue` was `null`,
  *                              otherwise returns the object parsed from the
  *                              given string
  * @private
  */
-const safeGetObj = (stringValue) => {
-  return stringValue !== null ? JSON.parse(stringValue) : {};
+const safeGetObj = (stringValue, def={}) => {
+  return stringValue !== null ? JSON.parse(stringValue) : def;
 }
 
 export default {
@@ -100,5 +117,7 @@ export default {
   getSkipSetting,
   setSkipSetting,
   getStoreSetting,
-  setStoreSetting
+  setStoreSetting,
+  setDoNotSkipNext,
+  getDoNotSkipNext
 };
