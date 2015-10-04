@@ -52,6 +52,7 @@ const checkForImgurUrl = (tabId, changeInfo, tab) => {
     if (tab.url.indexOf('//imgur.com') !== -1) {
       chrome.pageAction.show(tabId);
       processUrl(tab.url);
+      resetDoNotSkipNextFlag();
     } else {
       chrome.pageAction.hide(tabId);
     }
@@ -89,11 +90,31 @@ const skipImage = () => {
     return;
   }
   chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+    if (!tabs.length) {
+      return;
+    }
     chrome.tabs.sendMessage(tabs[0].id, {
       action: 'skip',
       payload: {
         history: storage.getHistory()
       }
+    }, response => {
+      // put response from message here if needed
+    });
+  });
+}
+
+/**
+ * Passes a message to the content script to notify that the skip checking phase is done,
+ * so the flag can be reset safely.
+ */
+const resetDoNotSkipNextFlag = () => {
+  chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+    if (!tabs.length) {
+      return;
+    }
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'resetDoNotSkipNextFlag',
     }, response => {
       // put response from message here if needed
     });

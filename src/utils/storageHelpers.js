@@ -70,6 +70,23 @@ const setStoreSetting = (value) => {
 }
 
 /**
+ * Gets the doNotSkip flag saved in storage
+ * @return  {Boolean} value `true` to disable the skip behavior on the next image.
+ */
+const getDoNotSkipNext = () => {
+  let skipString = localStorage.getItem(keys.SKIPNEXT);
+  return safeGetBool(skipString);
+}
+
+/**
+ * Sets the doNotSkip flag and saves it to storage
+ * @param  {Boolean} value `true` to disable the skip behavior on the next image.
+ */
+const setDoNotSkipNext = (value) => {
+  localStorage.setItem(keys.SKIPNEXT, String(value));
+}
+
+/**
  * Checks a strigified boolean and defaults to `true` if the string is `null`
  * @param  {String} stringValue The stringified bool
  * @return {Boolean}            `true` if the string is null or it represents
@@ -100,5 +117,7 @@ export default {
   getSkipSetting,
   setSkipSetting,
   getStoreSetting,
-  setStoreSetting
+  setStoreSetting,
+  setDoNotSkipNext,
+  getDoNotSkipNext
 };
