@@ -1,5 +1,7 @@
 'use strict';
 
+import { storage } from '../utils';
+
 /**
  * Tries to get the prev and next button with their classname,
  * listens to mouseclick event and delegate to navHandler.
@@ -34,20 +36,15 @@ const listenKeyShortcuts = () => {
 
 /**
  * Called when a perv or next action is catched.
- * Sends a 'navCatched' action to the background script.
- * The background script should know how to interpret the action, and decide to disable the skip.
+ * Set the doNotSkipNext flag up for the next image if the shift key is down.
+ * It will disable the skip.
  * @param {String}   direction
  * @param {DOMevent} e
  */
 const navHandler = (direction, e) => {
-  chrome.extension.sendMessage({
-    action: 'navCatched',
-    payload: {
-      direction,
-      altKey: e.altKey,
-      ctrlKey: e.ctrlKey
-    }
-  });
+  if (e.shiftKey) {
+    storage.setDoNotSkipNext(true);
+  }
 }
 
 export default {

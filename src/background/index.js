@@ -36,9 +36,6 @@ const onMessage = (msg, sender, sendResponse) => {
     case 'clearSkips':
       clearSkips();
       break;
-    case 'navCatched':
-      catchNav(msg.payload);
-      break;
     default:
       console.warn('Unrecognized message: ' + msg.action);
   }
@@ -55,6 +52,7 @@ const checkForImgurUrl = (tabId, changeInfo, tab) => {
     if (tab.url.indexOf('//imgur.com') !== 1) {
       chrome.pageAction.show(tabId);
       processUrl(tab.url);
+      resetDoNotSkipNextFlag();
     } else {
       chrome.pageAction.hide(tabId);
     }
@@ -88,17 +86,35 @@ const processUrl = (url) => {
  * Passes a message to the content script to skip the image
  */
 const skipImage = () => {
-  let _doNotSkipNext = doNotSkipNext;
-  doNotSkipNext = false;
-  if (!storage.getSkipSetting() || _doNotSkipNext) {
+  if (!storage.getSkipSetting()) {
     return;
   }
   chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+    if (!tabs.length) {
+      return;
+    }
     chrome.tabs.sendMessage(tabs[0].id, {
       action: 'skip',
       payload: {
         history: storage.getHistory()
       }
+    }, response => {
+      // put response from message here if needed
+    });
+  });
+}
+
+/**
+ * Passes a message to the content script to notify that the skip checking phase is done,
+ * so the flag can be reset safely.
+ */
+const resetDoNotSkipNextFlag = () => {
+  chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+    if (!tabs.length) {
+      return;
+    }
+    chrome.tabs.sendMessage(tabs[0].id, {
+      action: 'resetDoNotSkipNextFlag',
     }, response => {
       // put response from message here if needed
     });
@@ -185,20 +201,6 @@ const toggleStoring = () => {
  */
 const clearSkips = () => {
   storage.setHistory({});
-}
-
-/**
- * Called when a navigation action ( go to previous or go to next ) is catched.
- * Set the flag doNotSkipNext depending of the action.
- * The current strategy is to not skip if the action is previous, or if the altKey was down.
- * @param {Object}  payload
- * @param {String}  payload.direction
- * @param {Boolean} payload.ctrlKey
- * @param {Boolean} payload.altKey
- */
-let doNotSkipNext = false;
-const catchNav = ({direction, ctrlKey, altKey}) => {
-  doNotSkipNext = direction == 'prev' || altKey;
 }
 
 init();
