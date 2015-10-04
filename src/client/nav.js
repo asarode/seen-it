@@ -4,14 +4,14 @@ import { storage } from '../utils';
 
 /**
  * Tries to get the prev and next button with their classname,
- * listens to mouseclick event and delegate to navHandler.
+ * listens to mousedown event and delegate to navHandler.
  */
 const listenButtonClick = () => {
-  let nextButton = document.querySelector('.navNext')[0];
-  let prevButton = document.querySelector('.navPrev')[0];
+  let nextButton = document.querySelector('.navNext');
+  let prevButton = document.querySelector('.navPrev');
   if (nextButton && prevButton) {
-    nextButton.addEventListener('mouseclick', navHandler.bind(null, 'next'));
-    prevButton.addEventListener('mouseclick', navHandler.bind(null, 'prev'));
+    nextButton.addEventListener('mousedown', navHandler.bind(null, 'next'));
+    prevButton.addEventListener('mousedown', navHandler.bind(null, 'prev'));
   }
 }
 
