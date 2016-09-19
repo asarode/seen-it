@@ -3,9 +3,9 @@
 import { storage } from '../utils';
 
 const goToUnseen = (history) => {
-  let imageList = document.querySelectorAll('.items > a');
-  for (var i = 0; i < imageList.length; i++) {
-    let linkId = parseIdFromNode(imageList[i]);
+  const imageList = document.querySelectorAll('.items > a');
+  for (let i = 0; i < imageList.length; i++) {
+    const linkId = parseIdFromNode(imageList[i]);
     if (!history[linkId]) {
       imageList[i].click();
       break;
@@ -24,8 +24,8 @@ const goToUnseen = (history) => {
  * @private
  */
 const parseIdFromNode = (node) => {
-  let attr = node.getAttribute('data-reactid');
-  let startIndex = attr.lastIndexOf('$') + 1;
+  const attr = node.getAttribute('id');
+  const startIndex = 'item-'.length;
   return attr.substring(startIndex);
 }
 

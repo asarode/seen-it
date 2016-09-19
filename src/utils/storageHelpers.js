@@ -8,19 +8,19 @@ import { keys } from '../constants';
  *                  no history object saved to storage
  */
 const getHistory = () => {
-  let stringified = localStorage.getItem(keys.HISTORY);
+  const stringified = safeGetStorage(keys.HISTORY);
   return safeGetObj(stringified);
 }
 
 /**
- * Sets the history object and saves `it to storage
+ * Sets the history object and saves it to storage
  * @param  {Object} obj An object containing image ids as keys
  */
 const setHistory = (obj) => {
   if (!getStoreSetting()) {
     return;
   }
-  localStorage.setItem(keys.HISTORY, JSON.stringify(obj));
+  safeSetStorage(keys.HISTORY, obj);
 }
 
 /**
@@ -38,7 +38,7 @@ const storeImageId = (id) => {
  * @return {Boolean} `true` if skipping is enabled, `false` if disabled
  */
 const getSkipSetting = () => {
-  let skipString = localStorage.getItem(keys.SKIPS);
+  const skipString = safeGetStorage(keys.SKIPS);
   return safeGetBool(skipString);
 }
 
@@ -47,7 +47,7 @@ const getSkipSetting = () => {
  * @param  {Boolean} value `true` to enable skipping, `false` to disable it
  */
 const setSkipSetting = (value) => {
-  localStorage.setItem(keys.SKIPS, String(value));
+  safeSetStorage(keys.SKIPS, value);
 }
 
 /**
@@ -55,7 +55,7 @@ const setSkipSetting = (value) => {
  * @return {Boolean} `true` if storing is enabled, `false` if disabled
  */
 const getStoreSetting = () => {
-  let storeString = localStorage.getItem(keys.STORE);
+  const storeString = safeGetStorage(keys.STORE);
   return safeGetBool(storeString);
 }
 
@@ -64,7 +64,7 @@ const getStoreSetting = () => {
  * @param  {Boolean} value `true` to enable skipping, `false` to disable it
  */
 const setStoreSetting = (value) => {
-  localStorage.setItem(keys.STORE, String(value));
+  safeSetStorage(keys.STORE, value);
 }
 
 /**
@@ -72,7 +72,7 @@ const setStoreSetting = (value) => {
  * @return  {Boolean} value `true` to disable the skip behavior on the next image.
  */
 const getDoNotSkipNext = () => {
-  let skipString = localStorage.getItem(keys.SKIPNEXT);
+  const skipString = safeGetStorage(keys.SKIPNEXT);
   return safeGetBool(skipString, false);
 }
 
@@ -81,7 +81,7 @@ const getDoNotSkipNext = () => {
  * @param  {Boolean} value `true` to disable the skip behavior on the next image.
  */
 const setDoNotSkipNext = (value) => {
-  localStorage.setItem(keys.SKIPNEXT, String(value));
+  safeSetStorage(keys.SKIPNEXT, value);
 }
 
 /**
@@ -108,6 +108,18 @@ const safeGetBool = (stringValue, def=true) => {
  */
 const safeGetObj = (stringValue, def={}) => {
   return stringValue !== null ? JSON.parse(stringValue) : def;
+}
+
+const safeSetStorage = (key, obj) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(obj));
+  } catch(e) {}
+}
+
+const safeGetStorage = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch(e) {}
 }
 
 export default {
