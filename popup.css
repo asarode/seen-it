@@ -39,7 +39,24 @@ h1 {
   margin-bottom: 24px;
 }
 
+.instruction-item {
+  margin-bottom: 18px;
+  display: flex;
+}
+
+.instruction-decoration {
+  margin: 0 2px;
+}
+
+.instruction-content {
+  margin-left: 6px;
+}
+
 .option-item-label {
+  font-size: 14px;
+}
+
+.instruction-item-label {
   font-size: 14px;
 }
 
@@ -47,7 +64,13 @@ h1 {
   margin: 0;
   margin-top: 6px;
   padding-left: 22px;
-  opacity: 0.5;
+  opacity: 0.8;
+}
+
+.instruction-item-label--hint {
+  margin: 0;
+  margin-top: 6px;
+  opacity: 0.8;
 }
 
 .button-clear {
