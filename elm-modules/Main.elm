@@ -1,34 +1,57 @@
 module Main exposing (..)
 
-import Html exposing (Html, button, div, text)
-import Html.App as Html
-import Html.Events exposing (onClick)
-
+import Html exposing (Html, Attribute, button, div, text)
+import Html.App
+import Html.Attributes exposing (style)
+import Keyboard exposing (KeyCode)
 
 type Msg
-    = Increment
-    | Decrement
+  = KeyDown KeyCode
 
+type alias Model = String
+
+init : (Model, Cmd Msg)
+init =
+  (initModel, Cmd.none)
+
+initModel : Model
+initModel =
+  "left : right"
+
+viewStyle : Attribute Msg
+viewStyle =
+  style
+    [ ("width", "200px")
+    ]
 
 view : a -> Html Msg
 view model =
-    div []
-        [ button [ onClick Decrement ] [ text "-" ]
-        , div [] [ text (toString model) ]
-        , button [ onClick Increment ] [ text "+" ]
-        ]
+  div [ viewStyle ]
+    [ text (toString model)
+    ]
 
-
-update : Msg -> number -> number
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-    case msg of
-        Increment ->
-            model + 1
+  case msg of
+    KeyDown keyCode ->
+      let
+        newModel =
+          case keyCode of
+            37 -> "LEFT : right"
+            39 -> "left : RIGHT"
+            _ -> initModel
+      in
+        (newModel, Cmd.none)
 
-        Decrement ->
-            model - 1
-
+subscriptions : Model -> Sub Msg
+subscriptions model =
+  Keyboard.downs KeyDown
 
 main : Program Never
 main =
-    Html.beginnerProgram { model = 0, view = view, update = update }
+  Html.App.program
+    { init = init
+    , view = view
+    , update = update
+    , subscriptions = subscriptions
+    }
