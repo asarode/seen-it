@@ -1,22 +1,22 @@
 module Main exposing (..)
 
 import Html exposing (Html, Attribute, button, div, text)
+import Html.Events exposing (onClick)
 import Html.App
 import Html.Attributes exposing (style)
-import Keyboard exposing (KeyCode)
+import MainModel exposing (Model)
+import LocalStorage exposing (setStorage, clearStorage)
 
 type Msg
-  = KeyDown KeyCode
-
-type alias Model = String
+  = SaveToStorage
+  | ClearStorage
 
 init : (Model, Cmd Msg)
 init =
   (initModel, Cmd.none)
 
 initModel : Model
-initModel =
-  "left : right"
+initModel = { dummy = "initial model" }
 
 viewStyle : Attribute Msg
 viewStyle =
@@ -27,25 +27,19 @@ viewStyle =
 view : a -> Html Msg
 view model =
   div [ viewStyle ]
-    [ text (toString model)
+    [ button [ onClick SaveToStorage ] [ text "Save to storage" ]
+    , button [ onClick ClearStorage ] [ text "Clear storage" ]
     ]
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    KeyDown keyCode ->
-      let
-        newModel =
-          case keyCode of
-            37 -> "LEFT : right"
-            39 -> "left : RIGHT"
-            _ -> initModel
-      in
-        (newModel, Cmd.none)
+    SaveToStorage -> (model, setStorage model)
+    ClearStorage -> (model, clearStorage ())
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Keyboard.downs KeyDown
+  Sub.none
 
 main : Program Never
 main =
